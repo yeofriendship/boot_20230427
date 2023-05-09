@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+</head>
+<body>
+    <h3>홈화면</h3>
+    <hr />
+    
+    <div th:if="${user == null}">
+        <a th:href="@{/customer/join.do}">고객 회원가입</a>
+        <a th:href="@{/login.do}">고객 로그인</a>
+    </div>
+
+    <div th:if="${user != null}">
+        <p th:text="${user.username}"></p>
+        <p th:text="${user.authorities[0]}"></p>
+        <a th:href="@{/customer/home.do}">고객홈</a>
+        <form th:action="@{/logout.do}" method="post">
+            <input type="submit" value="로그아웃">
+        </form>
+    </div>
+
+    <hr />
+
+    <div th:if="${user == null}">
+        <a th:href="@{/seller/join.do}">판매자 회원가입</a>
+        <a th:href="@{/seller/login.do}">판매자 로그인</a>
+    </div>
+
+    <div th:if="${user != null}">
+        <p th:text="${user.username}"></p>
+        <p th:text="${user.authorities[0]}"></p>
+        <a th:href="@{/seller/home.do}">판매자홈(ADMIN, SELLER)</a>
+        <form th:action="@{/logout.do}" method="post">
+            <input type="submit" value="로그아웃">
+        </form>
+    </div>
+
+    <hr />
+
+    <div th:if="${user == null}">
+        <a th:href="@{/admin/join.do}">관리자 회원가입</a>
+        <a th:href="@{/admin/login.do}">관리자 로그인</a>
+    </div>
+
+    <div th:if="${user != null}">
+        <p th:text="${user.username}"></p>
+        <p th:text="${user.authorities[0]}"></p>
+        <a th:href="@{/admin/home.do}">관리자홈</a>
+        <form th:action="@{/logout.do}" method="post">
+            <input type="submit" value="로그아웃">
+        </form>
+    </div>
+
+    
+
+    <!-- <a th:href="@{/board/insert.do}">게시판글쓰기</a>
+
+    <div th:if="${session.USERID == null}">
+        <a th:href="@{/member/login.do}">로그인</a>
+        <a th:href="@{/member/join.do}">회원가입</a>
+    </div>
+
+    <div th:if="${session.USERID != null}">
+        <p th:text="|${session.USERNAME} 님 로그인|"></p>
+        <a th:href="@{/member/logout.do}">로그아웃</a>
+        <a th:href="@{/member/update.do}">정보수정</a>
+        <a th:href="@{/member/delete.do}">회원탈퇴</a>
+
+        <div th:if="${#strings.equals(session.ROLE,'SELLER')}">
+            <a th:href="@{/seller/home.do}">판매자홈</a>
+        </div>
+    </div>  -->
+
+</body>
+</html>

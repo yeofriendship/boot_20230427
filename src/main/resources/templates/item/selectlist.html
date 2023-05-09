@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>물품 목록</title>
+</head>
+<body>
+    <table>
+        <thead>
+            <tr>
+                <th>물품번호</th>
+                <th>물품명</th>
+                <th>물품내용</th>
+                <th>물품가격</th>
+                <th>물품수량</th>
+                <th>등록일</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="obj : ${list}">
+                <td th:text="${obj.no}"></td>
+                <td th:text="${obj.name}"></td>
+                <td th:text="${obj.content}"></td>
+                <td th:text="${obj.price}"></td>
+                <td th:text="${obj.quantity}"></td>
+                <td th:text="${obj.regdate}"></td>
+                <td><a th:href="@{/item/insertimage.do(no=${obj.no})}">이미지등록</a></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

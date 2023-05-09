@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.ItemMapper"> 
+    <select id="selectItemList" resultType="Item">
+        SELECT * FROM item ORDER BY no DESC;
+    </select>
+
+    <insert id="insertItemImageOne" parameterType="ItemImage">
+        INSERT INTO itemimage(filename, filesize, filetype, filedata, itemno)
+        VALUES(#{filename}, #{filesize}, #{filetype}, #{filedata}, #{itemno})
+    </insert>
+
+    <select id="selectItemImageOne" parameterType="long" resultType="ItemImage">
+        SELECT * FROM itemimage WHERE no = #{no}
+    </select>
+
+    <select id="selectItemImageNo" parameterType="long" resultType="long">
+        SELECT no FROM itemimage WHERE itemno = #{itemno}
+    </select>
+
+    <insert id="insertItemBatch" parameterType="list">
+        INSERT INTO item(no, name, content, price, quantity, seller)
+        SELECT SEQ_ITEM_NO.NEXTVAL, T1.* FROM(
+            <foreach item="obj" collection="list" separator=" UNION ALL ">
+                SELECT '${obj.name}' NAME, '${obj.content}' CONTENT, ${obj.price} PRICE, ${obj.quantity} QUANTITY, '${obj.seller}' SELLER FROM DUAL
+            </foreach>
+        ) T1
+    </insert>
+
+    <!-- string : java.lang.String의 축약형 -->
+    <!-- list : java.util.List의 축약형 -->
+    <select id="selectItemSellerList" parameterType="string" resultType="com.example.dto.Item">
+        SELECT * FROM item WHERE SELLER=#{seller} ORDER BY no DESC
+    </select>
+
+    <delete id="deleteItemBatch" parameterType="arraylist">
+        DELETE FROM item WHERE no IN (
+            <foreach collection="array" item="tmp" separator=" , ">
+                #{tmp}
+            </foreach>
+        )
+    </delete>
+
+    <select id="selectItemNoList" parameterType="arraylist" resultType="com.example.dto.Item">
+        <foreach collection="array" item="tmp" separator=" , " open=" SELECT * FROM item WHERE no IN ( " close=" ) ">
+            #{tmp}
+        </foreach>
+    </select>
+
+    <update id="updateItemBatch" parameterType="list">
+        UPDATE item SET
+            name = (CASE
+                <foreach collection="list" item="obj" separator=" ">
+                    WHEN NO=#{obj.no} THEN #{obj.name}
+                </foreach>
+            END),
+            content = (CASE
+                <foreach collection="list" item="obj" separator=" ">
+                    WHEN NO=#{obj.no} THEN #{obj.content}
+                </foreach>
+            END),
+            price = (CASE
+                <foreach collection="list" item="obj" separator=" ">
+                    WHEN NO=#{obj.no} THEN #{obj.price}
+                </foreach>
+            END),
+            quantity = (CASE
+                <foreach collection="list" item="obj" separator=" ">
+                    WHEN NO=#{obj.no} THEN #{obj.quantity}
+                </foreach>
+            END)
+        WHERE no IN (
+            <foreach collection="list" item="obj" separator=" , ">
+                #{obj.no}
+            </foreach>
+        )
+    </update>
+</mapper>

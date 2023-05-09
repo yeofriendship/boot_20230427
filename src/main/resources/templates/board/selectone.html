@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${obj.title}"></title>
+</head>
+<body>
+    <h3 th:text="${obj.title}"></h3>
+    <hr />
+    <p th:text="${obj.no}"></p>
+    <p th:text="${obj.title}"></p>
+    <p th:text="${obj.content}"></p>
+    <p th:text="${obj.writer}"></p>
+    <p th:text="${obj.hit}"></p>
+    <p th:text="${obj.regdate}"></p>
+
+    <a th:href="@{/board/select.do}">목록</a> <br />
+    <a th:href="@{/board/update.do(no=${obj.no})}">수정</a>
+    <form th:action="@{/board/delete.do}" method="post">
+        <input type="hidden" name="no" th:value="${obj.no}" />
+        <input type="submit" value="삭제" />
+    </form>
+    
+
+
+</body>
+</html>

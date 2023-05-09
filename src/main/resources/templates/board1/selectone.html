@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>게시글 1개 조회</title>
+</head>
+<body>
+    <h3>게시글 상세</h3>    
+    <a th:href="@{/board1/selectlist.do}">목록으로</a><br/>
+    글번호 : <label th:text="${board1.no}"></label><br/>
+    제목 : <label th:text="${board1.title}"></label><br/>
+    내용 : <label th:text="${board1.content}"></label><br/>
+    작성자 : <label th:text="${board1.writer}"></label><br/>
+    조회수 : <label th:text="${board1.hit}"></label><br/>
+    작성일 : <label th:text="${board1.regdate}"></label><br/>
+    <hr/>
+
+    <h3>답글 목록</h3>
+    <table>
+        <thead>
+            <tr th:each="tmp : ${board1.list}">
+                <td th:text="${tmp.no}"></td>
+                <td th:text="${tmp.content}"></td>
+                <td th:text="${tmp.writer}"></td>
+                <td th:text="${tmp.regdate}"></td>
+            </tr>
+        </thead>
+    </table>
+    <hr />
+
+    <h3>답글 작성</h3>
+    <form th:action="@{/reply1/insert.do}" method="post">
+        <input type="text" name="board1.no" th:value="${board1.no}" readonly />
+        <input type="text" name="content" placeholder="답글 내용" />
+        <input type="text" name="writer" placeholder="답글 작성자" />
+        <input type="submit" value="답글작성" />
+    </form>
+</body>
+</html>

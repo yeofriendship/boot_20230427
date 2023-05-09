@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>고객 회원가입</title>
+</head>
+<body>
+    <h3>고객용 회원가입 화면</h3>
+    <form th:action="@{/customer/join.do}" method="post">
+        아이디 : <input type="text" name="id" autofocus /><br/>
+        암호 : <input type="text" name="password" value="a" /><br/>
+        이름 : <input type="text" name="name" value="가나다" /><br/>
+        나이 : <input type="number" name="age" value="11" /><br/>
+        권한(변경X) : <input type="text" name="role" value="CUSTOMER" readonly /><br/>
+        <input type="submit" name="회원가입" />
+    </form>
+</body>
+</html>

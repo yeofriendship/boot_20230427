@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>게시글 목록</h3>
+    <a th:href="@{/board/insert.do}">글쓰기</a>
+    <table>
+
+        <thead>
+            <tr>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>날짜</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr th:each="one : ${list}"> <!--반복문임-->
+                <td th:text="${one.no}"></td>
+                <td>
+                    <a th:href="@{/board/selectone.do(no=${one.no})}" th:text="${one.title}"></a>
+                <td th:text="${one.writer}"></td>
+                <td th:text="${one.hit}"></td>
+                <td th:text="${one.regdate}"></td>
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>

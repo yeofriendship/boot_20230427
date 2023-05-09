@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--여기서 param 못씀-->
+<mapper namespace="com.example.mapper.BoardMapper"> 
+
+    <!--수정-->
+    <update id="updateBoard" parameterType="com.example.dto.Board"> 
+        UPDATE board SET title=#{title}, content=#{content}, writer=#{writer} WHERE no=#{no} 
+    </update>
+
+    <!--삭제-->
+    <delete id="deleteBoard" parameterType="long">
+        DELETE FROM board WHERE no=#{no}
+    </delete>
+
+    <!-- 조회수 증가 -->
+    <update id="updatehit" parameterType="long">
+        UPDATE board SET hit = hit + 1 WHERE no = #{no}
+    </update>
+</mapper>

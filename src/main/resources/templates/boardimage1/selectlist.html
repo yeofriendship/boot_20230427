@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>게시판 이미지</title>
+</head>
+<body>
+    <h3>이미지 목록</h3>
+
+    <a th:href="@{/board1/selectlist.do}"><button>게시글목록</button></a><br />
+    대표 이미지 (가장 먼저 등록한 이미지)<br />
+    <img th:src="${board1.imageUrl}" style="width: 100px; height: 100px;"><br/>
+    글번호 : <label th:text="${board1.no}"></label><br />
+    글제목 : <label th:text="${board1.title}"></label>
+    <hr />
+
+    <div th:each="tmp : ${imageList}" style="display: inline-block;">
+        <img th:src="${tmp}" style="width: 100px; height: 100px;">
+    </div>
+    <hr />
+
+    <h3>이미지 등록</h3>
+    <form th:action="@{/boardimage1/insertimage.do}" method="post" enctype="multipart/form-data">
+        <input type="text" name="board1.no" th:value="${board1.no}" /><br />
+        <input type="file" name="tmpfile" accept="image/*" /><br />
+        <input type="submit" value="이미지업로드" />
+    </form>
+</body>
+</html>

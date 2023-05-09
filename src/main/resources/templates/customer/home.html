@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>고객 홈</title>
+</head>
+<body>
+    <h3>고객용 홈 화면</h3>
+    
+    <a th:href="@{/customer/home.do(menu=1)}">정보수정(이름, 나이)</a>
+    <a th:href="@{/customer/home.do(menu=2)}">비번변경(현재비번 확인 후 변경)</a>
+    <a th:href="@{/customer/home.do(menu=3)}">회원탈퇴(삭제, 로그아웃)</a>
+    <form th:action="@{/logout.do}" method="post">
+        <input type="submit" value="로그아웃" />
+    </form>
+    <hr/>
+
+    <div th:if="${#strings.equals(param.menu, '1')}">
+        <form th:action="@{/customer/home.do(menu=1)}" th:object="${member}" method="post">
+            <input type="text" name="name" th:field="${member.name}" placeholder="이름" />
+
+            <select th:field="${member.age}">
+                <!-- <option value="전송값">화면에 보이는 것</option> -->
+                <option th:each="num : ${#numbers.sequence(1, 120)}" th:value="${num}" th:text="|나이 ${num}|"></option>
+            </select>
+
+            <input type="submit" value="정보변경" />
+        </form>
+        <hr/>
+        <form th:object="${member}">
+            <input type="checkbox" th:each="tmp : ${checklabel}" th:text="${tmp}" th:value="${tmp}" th:field="${member.name}" />
+            <hr/>
+            <input type="radio" th:each="tmp : ${checklabel}" th:text="${tmp}" th:value="${tmp}" th:field="${member.name}" />
+        </form>
+    </div>
+    
+    <div th:if="${#strings.equals(param.menu, '2')}">
+        <form th:action="@{/customer/home.do(menu=2)}" method="post">
+            <input type="text" name="password" placeholder="현재 비번" />
+            <input type="text" name="newpassword" placeholder="바꿀 비번" />
+            <input type="submit" value="비번변경" />
+        </form>
+    </div>
+    
+    <div th:if="${#strings.equals(param.menu, '3')}">
+        <form th:action="@{/customer/home.do(menu=3)}" method="post">
+            <input type="text" name="password" placeholder="현재비번" />
+            <input type="submit" value="탈퇴" />
+        </form>
+    </div>
+</body>
+</html>

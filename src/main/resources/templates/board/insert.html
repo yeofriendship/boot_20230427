@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>게시판 글쓰기</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+
+    <div>
+        <h3>게시판글쓰기</h3>
+        <hr />
+        <form th:action="@{/board/insert.do}" method="post">
+            제목: <input type="text" name="title" value="제목"/><br />
+            내용: <input type="text" name="content" value="내용"/><br />
+            작성자: <input type="text" name="writer" value="작성자"/><br />
+            <input type="submit" value="글쓰기" /><br />
+        </form>
+    </div>
+
+</body>
+</html>
