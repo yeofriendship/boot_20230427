@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.controller.mybatis;
 
 import java.io.IOException;
 import java.io.InputStream;

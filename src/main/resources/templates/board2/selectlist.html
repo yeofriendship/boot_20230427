@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+</head>
+<body>
+    <h3>목록(board)</h3>
+    <a th:href="@{/board2/insertbatch.pknu}"><button>일괄추가</button></a>
+    <button th:onclick="formAction1(1)">일괄수정</button>
+    <button th:onclick="formAction1(2)">일괄삭제</button>
+    <hr/>
+
+    <form th:action="@{/board2/selectlist.pknu}" method="get">
+        <input type="hidden" name="page" value="1" />
+        <select name="type">
+            <option value="title">제목</option>
+            <option value="content">내용</option>
+            <option value="writer">작성자</option>
+        </select>
+        <input type="text" name="text" placeholder="검색어" />
+        <input type="submit" value="검색" />
+    </form>
+
+    <!-- form 태그의 action에는 임의로 하나 넣어둠 -> csrf 때문에 -->
+    <form th:action="@{/board2/updatebatch.pknu}" method="post" id="form">
+        <table border="1">
+            <tr>
+                <th></th>
+                <th>번호</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>조회수</th>
+                <th>작성일</th>
+            </tr>
+            <tr th:each="obj : ${list}">
+                <td><input type="checkbox" name="chk[]" th:value="${obj.no.longValue()}" /></td>
+                <td th:text="${obj.no.longValue()}"></td>
+                <td th:text="${obj.title}"></td>
+                <td th:text="${obj.writer}"></td>
+                <td th:text="${obj.hit.longValue()}"></td>
+                <td th:text="${obj.regdate}"></td>
+            </tr>
+        </table>
+    </form>
+
+    <th:block th:each="num : ${#numbers.sequence(1, pages)}">
+        <a th:href="@{/board2/selectlist.pknu(page=${num}, type=${param.type}, text=${param.text})}" th:text="${num}"></a>
+    </th:block>
+
+    <script th:inline="javascript" type="text/javascript">
+        function formAction1(code) {
+            const form = document.getElementById('form');
+
+            if (code === 1) {
+                // 빨간줄 보기 싫어서 주석처리 + '' 추가 해줌
+                form.action = /*[[@{/board2/updatebatch.pknu}]]*/'';
+            }
+            else if (code === 2) {
+                form.action = /*[[@{/board2/deletebatch.pknu}]]*/'';
+            }
+
+            form.submit();
+        }
+    </script>
+</body>
+</html>

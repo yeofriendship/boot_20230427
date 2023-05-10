@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.controller.mybatis;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

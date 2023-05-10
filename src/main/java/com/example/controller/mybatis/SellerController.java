@@ -1,4 +1,4 @@
-package com.example.controller;
+package com.example.controller.mybatis;
 
 import java.util.ArrayList;
 import java.util.List;

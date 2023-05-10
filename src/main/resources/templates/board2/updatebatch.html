@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+</head>
+<body>
+    <h3>일괄수정(board)</h3>
+    <a th:href="@{/board2/selectlist.pknu}"><button>목록으로</button></a>
+    <hr/> 
+
+    <form th:action="@{/board2/updatebatchaction.pknu}" method="post">
+        <table>
+            <tr th:each="obj : ${list}">
+                <td><input type="text" name="no[]" th:value="${obj.no.longValue()}" readonly /></td>
+                <td><input type="text" name="title[]" th:value="${obj.title}" /></td>
+                <td><input type="text" name="content[]" th:value="${obj.content}" /></td>
+                <td><input type="text" name="writer[]" th:value="${obj.writer}" /></td>
+                <td><input type="text" th:value="${obj.hit.longValue()}" readonly /></td>
+                <td><input type="text" th:value="${obj.regdate}" readonly /></td>
+            </tr>
+        </table>
+        <input type="submit" value="일괄수정" />
+    </form>
+</body>
+</html>
