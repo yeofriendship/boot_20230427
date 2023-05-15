@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.entity.Address1;
+import com.example.entity.Address1Projection;
 import com.example.entity.Member1;
 import com.example.repository.Address1Repository;
 import com.example.repository.Member1Repository;
@@ -87,6 +88,22 @@ public class Address1Controller {
 
             return "redirect:/address1/selectlist.do?id=" + id;
         } 
+        catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
+    // projection
+    @GetMapping(value = "/selectlistprojection.do")
+    public String selectlistprojectionGET(Model model) {
+        try {
+            List<Address1Projection> list = a1Repository.findAllByOrderByNoDesc(Address1Projection.class);
+            // List<Address1> list = a1Repository.findAllByOrderByNoDesc(Address1.class);
+
+            model.addAttribute("list", list);
+            return "/address1/selectlistprojection";
+        }
         catch (Exception e) {
             e.printStackTrace();
             return "redirect:/home.do";

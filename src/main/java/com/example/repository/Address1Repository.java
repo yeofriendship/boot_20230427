@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.example.entity.Address1;
+import com.example.entity.Address1Projection;
 
 
 // 저장소 생성 : JpaRepository에는 기본적인 crud 구현되어 있음
@@ -32,4 +33,17 @@ public interface Address1Repository extends JpaRepository<Address1, Long> {
 
     // SELECT * FROM address1 WHERE member1.id=? ORDER BY no DESC + 페이지네이션 기능 포함
     List<Address1> findByMember1_idOrderByNoDesc(String id, Pageable pageable);
+
+    // -------------------------------------------------------------------------------------
+    // projection
+
+    // SELECT a.no, a.address, m.id, m.name FROM address1 a, member1 m ORDER BY no DESC
+    // List<Address1Projection> findAllByOrderByNoDesc();
+
+    // List<Address1> findAllByOrderByNoDesc();
+    // 메소드명이 같은데 서로 반환 타입이 다르면 오류발생 => 제너릭 사용
+
+    // 제너릭을 이용한 타입 설정
+    // 제너릭 => 같은 메소드를 여러 타입으로 쓸 수 있음
+    <T> List<T> findAllByOrderByNoDesc(Class<T> type);
 }

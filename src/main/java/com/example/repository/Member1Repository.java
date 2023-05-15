@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.example.entity.Member1;
+import com.example.entity.Member1Projection;
 
 @Repository
 // JpaRepository<Member1, String> => JpaRepository<엔티티 , 엔티티의 기본키 타입>
@@ -29,4 +30,10 @@ public interface Member1Repository extends JpaRepository<Member1, String> {
     // nativequery사용하기 => :name
     @Query(value="SELECT * FROM ( SELECT m1.*, ROW_NUMBER() OVER (ORDER BY name DESC) rown FROM MEMBER1 m1 WHERE m1.name LIKE '%' || :name || '%' ) WHERE rown BETWEEN :start AND :end", nativeQuery=true)
     public List<Member1> selectByNameContainingPagenation(@Param("name") String name, @Param("start") int start, @Param("end") int end );
+
+    // ----------------------------------------------------------------------------------------
+    // projection
+    
+    // SELECT id, name, age FROM member1 ORDER BY id ASC;
+    public List<Member1Projection> findAllByOrderByIdAsc();
 }

@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.example.entity.Member1;
+import com.example.entity.Member1Projection;
+import com.example.entity.MemberInfo1;
 import com.example.repository.Member1Repository;
 
 import lombok.RequiredArgsConstructor;
@@ -97,6 +99,63 @@ public class Member1Controller {
             m1Repository.save(member2);
             return "redirect:/member1/selectlist.do";
         } catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
+    // projection
+    @GetMapping(value = "/selectlistprojection.do")
+    public String selectListProjectionGET(Model model) {
+        try {
+            List<Member1Projection> list = m1Repository.findAllByOrderByIdAsc();
+
+            // projection은 toString()으로 출력 불가 (class가 아닌 interface이기 때문에 lombok(@Data)을 쓸 수 없음) => 반복문 돌려야함
+            // log.info(format, list.toString());
+
+            for (Member1Projection obj : list) {
+                log.info(format, obj.getId() + " , " + obj.getName() + " , " + obj.getAge());
+            }
+
+            model.addAttribute("list", list);
+            return "/member1/selectlistprojection";
+        } 
+        catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
+    // one to one 예제 (Member1 - MemberInfo1)
+    // 127.0.0.1:9090/ROOT/member1/join1.do
+    @GetMapping(value = "/join1.do")
+    public String join1GET() {
+        try {
+            return "/member1/join1";
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            return "redirect:/home.do";
+        }
+    }
+
+    @PostMapping(value = "/join1.do")
+    public String join1POST(@ModelAttribute Member1 member1,
+                            @ModelAttribute MemberInfo1 memberInfo1) {
+        try {
+            // Member1(id=a, pw=a, name=b, age=1, regdate=null)
+            log.info("{}", member1);
+            member1.setMemberInfo1(memberInfo1); // memberInfo1 부분만 null 값이 들어가기 때문에 추가해줌
+
+            // MemberInfo1(id1=null, member1=null, info=정보, regdate=null)
+            log.info("{}", memberInfo1);
+            memberInfo1.setMember1(member1); // member1 부분만 null 값이 들어가기 때문에 추가해줌
+
+            m1Repository.save(member1); // 두개의 테이블 값이 동시에 추가됨 (저장소는 둘 중 아무거나 써도 상관 X)
+
+            return "redirect:/member1/join1.do";
+        }
+        catch (Exception e) {
             e.printStackTrace();
             return "redirect:/home.do";
         }

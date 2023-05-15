@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+</head>
+<body>
+    <h3>메뉴관리</h3>    
+    <a th:href="@{/restaurant1/selectlist.food}"><button>식당목록</button></a><br/>
+    식당 번호 : <label th:text="${rno}"></label><br/>
+    식당 연락처 : <label th:text="${rphone}"></label>
+    <hr />
+
+    <h3>현재 등록된 메뉴 목록</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>이미지</th>
+                <th>메뉴 번호</th>
+                <th>메뉴명</th>
+                <th>가격</th>
+                <th>버튼</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="obj : ${list}">
+                <td><img th:src="@{/menu1/image(no=${obj.no})}" style="width: 50px; height: 50px;"></td>
+                <td th:text="${obj.no}"></td>
+                <td th:text="${obj.name}"></td>
+                <td th:text="${obj.price}"></td>
+                <td>
+                    <a th:href="@{/menu1/update.food(no=${obj.no}, rno=${rno}, rphone=${rphone})}"><button>수정</button></a>
+                    
+                    <!-- script로 ${} 값을 전송 => 대괄호 두개로 감싸야함 !!! -->
+                    <button th:onclick="deleteAction([[${obj.no}]])">삭제</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+
+    <h3>메뉴등록</h3>
+    <form th:action="@{/menu1/insert.food}" method="post" enctype="multipart/form-data">
+        메뉴명 : <input type="text" name="name" /><br />
+        가격 : <input type="number" name="price" /><br />
+        식당번호 : <input type="text" name="restaurant1.no" th:value="${rno}" readonly /><br />
+        식당연락처 : <input type="text" name="restaurant1.phone" th:value="${rphone}" readonly /><br />
+        이미지 : <input type="file" name="tmpFile" /><br />
+        <input type="submit" value="메뉴등록" />
+    </form>
+
+    <form th:action="@{/menu1/delete.food}" method="post" id="form2" style="display: none;">
+        <!-- no는 사용자가 누른 메뉴 번호가 들어가야하기 때문에 기본값을 넣지 않고 script에서 해결 -->
+        <input type="hidden" name="no" id="hidden_no" />
+        <input type="hidden" name="rno" th:value="${rno}" />
+        <input type="hidden" name="rphone" th:value="${rphone}" />
+    </form>
+
+    <script th:inline="javascript">
+        function deleteAction(no) {
+            if (confirm('삭제할까요?')) {
+                // 스크립트 확인용
+                // alert('삭제' + no);
+
+                document.getElementById('hidden_no').value = no;
+                document.getElementById('form2').submit();
+            }
+        }
+    </script>
+</body>
+</html>

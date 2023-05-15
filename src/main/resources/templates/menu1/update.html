@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <title>Page Title</title>
+</head>
+<body>
+    <h3>메뉴변경</h3>
+    <a th:href="@{/menu1/insert.food(rno=${rno}, rphone=${rphone})}"><button>메뉴관리</button></a>
+    <hr />
+    
+    <form th:action="@{/menu1/update.food}" method="post" enctype="multipart/form-data"
+          th:object="${obj}">
+        메뉴번호 : <input type="text" th:field="${obj.no}" readonly /><br />
+        메뉴명 : <input type="text" th:field="${obj.name}" /><br />
+        가격 : <input type="number" th:field="${obj.price}" /><br />
+        식당번호 : <input type="text" name="restaurant1.no" th:value="${rno}" readonly /><br />
+        식당연락처 : <input type="text" name="restaurant1.phone" th:value="${rphone}" readonly /><br />
+        현재 이미지 : <img th:src="@{/menu1/image(no=${obj.no})}" style="width: 50px; height: 50px;" /><br />
+        이미지 : <input type="file" name="tmpFile" /><br />
+        <input type="submit" value="메뉴변경" />
+    </form>
+</body>
+</html>

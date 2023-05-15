@@ -64,7 +64,7 @@ public class SecurityConfig {
         // post는 csrf를 전송해야하지만, 주소가 /api로 시작하는 모든 url은 csrf가 없어도 허용하도록 설정
         http.csrf().ignoringAntMatchers("/api/**");
 
-        // 서비스 등록
+        // 서비스 등록 (자동 등록됨. 생략가능)
         http.userDetailsService(userDetailsService);
 
         return http.build();

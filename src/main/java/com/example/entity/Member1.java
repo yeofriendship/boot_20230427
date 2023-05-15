@@ -10,6 +10,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.OrderBy;
 import javax.persistence.Table;
 
@@ -54,4 +55,8 @@ public class Member1 {
     // @OneToMany(mappedBy = "member1", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     // @OrderBy(value = "no desc")
     // List<Address1> list = new ArrayList<>();
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "member1", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private MemberInfo1 memberInfo1;
 }
