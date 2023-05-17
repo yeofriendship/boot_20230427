@@ -3,16 +3,19 @@ package com.example.config;
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
-import org.springframework.security.core.userdetails.UserDetailsService;
+// import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 import com.example.handler.CustomLoginSuccessHandler;
 import com.example.handler.CustomLogoutSuccessHandler;
+import com.example.service.SecurityServiceImpl;
+import com.example.service.SecurityServiceImpl1;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -22,10 +25,42 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RequiredArgsConstructor
 public class SecurityConfig {
-    final UserDetailsService userDetailsService; // 구현한 서비스 SecurityServiceImpl.java
+    // student2 테이블과 연동되는 서비스
+    final SecurityServiceImpl1 student2TableService;
+
+    // member 테이블과 연동되는 서비스
+    final SecurityServiceImpl memberTableService; // 구현한 서비스 SecurityServiceImpl.java
     
+    @Bean
+    @Order(value = 1)
+    public SecurityFilterChain filterChain1(HttpSecurity http) throws Exception {
+        log.info("SecurityConfig => {}", "start filter chain");
+
+        // 127.0.0.1:9090/ROOT/student2/login.do
+        // 127.0.0.1:9090/ROOT/student2/loginaction.do
+        // 해당 주소들만 필터함
+        http.antMatcher("/student2/login.do")
+            .antMatcher("/student2/loginaction.do")
+            .authorizeRequests().anyRequest().authenticated().and();
+
+        // (1) 로그인 처리
+        http.formLogin()
+            .loginPage("/student2/login.do") // 로그인하는 get 주소는?
+            .loginProcessingUrl("/student2/loginaction.do") // action은? => login.html
+            .usernameParameter("id") // 이메일의 name값은? => login.html
+            .passwordParameter("password") // 암호의 name값은? => login.html
+            .defaultSuccessUrl("/student2/home.do") // 로그인 성공시 이동할 페이지
+            .permitAll();  
+
+        // 서비스 등록 (자동 등록됨. 생략가능)
+        http.userDetailsService(student2TableService);
+
+        return http.build();
+    }
+
     @Bean // 객체를 생성(자동으로 호출됨)
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    @Order(value = 2) // 마지막 숫자로 변경(로그인 해야하는 테이블의 개수)
+    public SecurityFilterChain filterChain2(HttpSecurity http) throws Exception {
         log.info("SecurityConfig => {}", "start filter chain");
 
         // 권한 설정
@@ -65,7 +100,7 @@ public class SecurityConfig {
         http.csrf().ignoringAntMatchers("/api/**");
 
         // 서비스 등록 (자동 등록됨. 생략가능)
-        http.userDetailsService(userDetailsService);
+        http.userDetailsService(memberTableService);
 
         return http.build();
     }

@@ -17,6 +17,7 @@ import com.example.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+// Member 테이블과 연동되는 서비스
 @Service
 @Slf4j
 @RequiredArgsConstructor

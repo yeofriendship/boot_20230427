@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>detailsService를 사용하지 않음</h3>
+    <h3>로그인(student2)</h3>
+    <hr />
+
+    <form th:action="@{/student2/myloginaction.do}" method="post">
+        이메일 : <input type="text" name="email" autofocus /><br />
+        암호 : <input type="password" name="password" /><br />
+        <input type="submit" value="로그인" />
+    </form>  
+</body>
+</html>

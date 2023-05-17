@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>홈 화면(student2)</h3>
+    <hr />
+
+    <!-- 태그 display => block, inline, inline-block
+    (1) block : 태그 자체에 br이 있음  ex) p태그, div태그
+    (2) inline : 가로로 배치, width나 height 속성이 적용되지 않음  ex) label
+    (3) inline-block : block + inline, 가로로 배치하면서 width나 height 속성이 적용됨 -->
+
+    <div th:if="${user != null}">
+        <p th:text="${user}" style="display: inline-block;"></p>
+        <p th:text="${user.username}"></p>
+        
+        <form th:action="@{/logout.do}" method="post">
+            <input type="submit" value="로그아웃" />
+        </form>
+    </div>
+</body>
+</html>
