@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h3>chat</h3>
+
+    <div>
+        <input type="text" id="input"/>
+        <button id="send" onclick="sendMessage()">send</button>
+        <div id="messages" style="border:1px solid #cccccc;"></div>
+    </div>
+
+    <script>
+        // 화면을 새로고침을 하면
+        // 태그는 최초에 한번만 실행
+        // 스크립트는 한번 호출되고 24시간 계속 돌아감
+
+        // 화면(html)은 오류가 나도 진행이 됨
+        // 스크립트는 한 줄에서 오류가 나면 스크립트 자체가 중지됨
+
+        const str = "hello";
+        const a = "aa" + str + "aa"; //aahelloaa
+        const b = `aa${str}aa`; // aahelloaa
+        
+        // 고유한 아이디 만들기
+        const id = `ds211_${new Date().getTime()}`;
+        // console.log(id);
+
+        // 접속하기 => 내가 전달한 아이디를 map 변수에 보관(2분간)
+        const eventSource = new EventSource(`/ROOT/api/sse/subscribe?id=${id}`);
+        // console.log(eventSource);
+
+        // callback : 내가 직접 호출시키는 것이 아니라 서버에서 호출시키는 것
+        // callback 1
+        eventSource.onopen = (e) => {
+            console.log('onopen', e);
+        };
+
+        // callback 2
+        eventSource.onmessage = (e) => {
+            const div = document.querySelector('#messages');
+            div.innerHTML = `${e.data}<br />` + div.innerHTML;
+            console.log('onmessage', e.data);
+        };
+
+        // callback 3
+        eventSource.onerror = (e) => {
+            console.log('onerror', e);
+        };
+
+        // 함수 만들기
+        // (1)
+        // const func = () => {}
+        // (2)
+        // function func1 () {}
+
+        const sendMessage = () => {
+            // const msg = document.getElementById('input');
+            // const msg = document.getElementsByClassName('abc');
+
+            // # : 아이디 / . : 클래스
+            // 아이디가 input인 것을 찾음
+            const msg = document.querySelector('#input').value;
+
+            fetch(`/ROOT/api/sse/publish?message=${msg}`); // 메시지 보내기
+        };
+    </script>
+</body>
+</html>
